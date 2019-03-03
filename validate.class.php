@@ -14,10 +14,10 @@ class validate
     public function chkSignature()
     {
         $tmpArr = array($this->token, $this->timestamp, $this->nonce);
-        sort($tmpArr);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-        if( $tmpStr == $signature ){
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+        if( $tmpStr == $this->signature){
 
             return true;
 
