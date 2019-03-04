@@ -1,4 +1,7 @@
 <?php
+/**
+ * 验证是否是自己的微信服务器发来的信息
+ */
 class validate
 {   
     public $signature;
@@ -27,6 +30,4 @@ class validate
 
         }
     }
-}
-
 ?>
