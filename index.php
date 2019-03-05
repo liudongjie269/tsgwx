@@ -19,5 +19,7 @@
      }
      if (!empty($_POST)) {
          require_once("handler.class.php");
+         abc($_POST);
      }
+
 ?>
