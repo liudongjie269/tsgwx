@@ -1,17 +1,27 @@
 <?php
-  function abc($a){
-    $val = "";
-    $fileName = "abc";//文件名称
-    $data = fopen($fileName,'a+');//添加不覆盖，首先会判断这个文件是否存在，如果不存在，则会创建该文件，即每天都会创建一个新的文件记录的信息
-    $val.= $currentDateTime;
-    if($_POST){
-        $val.='|POST'.'|'.$_POST."\n";
-        foreach($_POST as $key =>$value){
-            $val .= '|'.$key.":".$value;
+function responseMsg($postStr)
+{
+    if (!empty($postStr)){
+        $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        $keyword = trim($postObj->Content);
+        $time = time();
+        $textTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[%s]]></MsgType>
+        <Content><![CDATA[%s]]></Content>
+        <FuncFlag>0<FuncFlag>
+        </xml>";
+        if(!empty( $keyword ))
+        {
+            $msgType = "text";
+            $contentStr = '你好啊，屌丝';
+            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+            echo $resultStr;
         }
     }
-    $val.= "\n";
-    fwrite($data,$val);//写入文本中
-    fclose($data);
-  }
+}
 ?>
