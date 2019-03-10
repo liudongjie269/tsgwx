@@ -4,20 +4,21 @@
  * get方式用validate进行验证，post方式用handler进行处理
  */
     // define("token","kytsg");
-    if (!empty($_GET)) {
+    if (isset($_GET['echostr'])) {
         require_once("validate.class.php");
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
+	@$echostr = $_GET["echostr"];
         // echo "asd";
         $myValidate=new validate($signature,$timestamp,$nonce,"kytsg");
         if ($myValidate->chkSignature()) {
-            echo $_GET["echostr"];
+            echo $echostr;
             exit;
         }
      }else{
-        $postStr = file_get_contents('php://input');
+        $webdata = file_get_contents("php://input"); 
         include_once("handler.class.php");
-        responseMsg($postStr);
+        responseMsg($webdata);
      }
 ?>

@@ -1,27 +1,15 @@
 <?php
-function responseMsg($postStr)
+function ResponseMsg($webdata)
 {
-    if (!empty($postStr)){
-        $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $fromUsername = $postObj->FromUserName;
-        $toUsername = $postObj->ToUserName;
-        $keyword = trim($postObj->Content);
-        $time = time();
-        $textTpl = "<xml>
-        <ToUserName><![CDATA[%s]]></ToUserName>
-        <FromUserName><![CDATA[%s]]></FromUserName>
-        <CreateTime>%s</CreateTime>
-        <MsgType><![CDATA[%s]]></MsgType>
-        <Content><![CDATA[%s]]></Content>
-        <FuncFlag>0<FuncFlag>
-        </xml>";
-        if(!empty( $keyword ))
-        {
-            $msgType = "text";
-            $contentStr = '你好啊，屌丝';
-            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-            echo $resultStr;
-        }
+    if (!empty($webdata)){
+        require_once('hander/receive.php');
+        $ParserXml=new Parser();
+        $Msg=$ParserXml.ParseXml($webdata);
+        echo "success";
+	    $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+	    $txt =json_encode($Msg,JSON_FORCE_OBJECT) ."\n";
+	    fwrite($myfile, $txt);
+	    fclose($myfile);
     }
 }
 ?>
